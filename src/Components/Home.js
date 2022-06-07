@@ -1,11 +1,32 @@
-import React from 'react'
+import React, {useState, useEffect } from 'react'
 import { Navbar } from './Navbar'
 import { Product } from './Product'
+import {auth,fs} from '../Config/Config'
 
 export default function Home() {
+    // getting current user function
+    function GetCurrentUser(){
+        const[user, setUser]=useState(null);
+        useEffect(()=>{
+            auth.onAuthStateChanged(user=>{
+                if(user){
+                    fs.collection('users').doc(user.uid).get().then(snapshot=>{
+                        setUser(snapshot.data().Fullname);
+                    })
+                }else{
+                    setUser(null);
+                }
+            })
+
+        },[])
+        return user;
+    }
+
+    const user = GetCurrentUser();
+    // console.log(user);
     return (
         <div>
-            <Navbar/>
+            <Navbar user={user}/>
             <Product/>
         </div>
     )
