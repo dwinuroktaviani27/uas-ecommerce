@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from 'react'
 import { Navbar } from './Navbar'
-import { Product } from './Product'
+import { Products } from './Products'
 import {auth,fs} from '../Config/Config'
 
 export default function Home() {
@@ -24,10 +24,45 @@ export default function Home() {
 
     const user = GetCurrentUser();
     // console.log(user);
+
+    // state of products
+    const [products, setProducts]=useState([]);
+
+    // getting products function
+    const getProducts = async ()=>{
+        const products = await fs.collection('Products').get();
+        const ProductsArray = [];
+        for (var snap of products.docs){
+            var data = snap.data();
+            data.ID = snap.id;
+            ProductsArray.push({
+                ...data
+            })
+            if(ProductsArray.length === products.docs.length){
+                setProducts(ProductsArray);
+            }
+        }
+    }
+
+    useEffect(()=>{
+        getProducts();
+    },[])
+
     return (
-        <div>
-            <Navbar user={user}/>
-            <Product/>
-        </div>
+        <>
+            <Navbar user={user}/>           
+            <br></br>
+            {Products.length > 0 && (
+                <div className='container-fluid'>
+                    <h1 className='text-center'>Products</h1>
+                    <div className='products-box'>
+                        <Products products={products}/>
+                    </div>
+                </div>
+            )}
+            {products.length < 1 && (
+                <div className='container-fluid'>Please wait....</div>
+            )}
+        </>
     )
 }
