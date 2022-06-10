@@ -71,7 +71,7 @@ export const Home=(props) => {
             Product['qty']=1;
             Product['TotalProductPrice']= Product.qty*Product.price;
             fs.collection('Cart' + uid).doc(product.ID).set(Product).then(()=>{
-                console.log('successfully added to cart');
+                console.log('successfully added to cart')
             })
         } else {
             props.history.push('/login');
