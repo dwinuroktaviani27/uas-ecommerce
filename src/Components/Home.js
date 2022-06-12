@@ -62,7 +62,21 @@ export const Home=(props) => {
     useEffect(() => {
         getProducts();
     }, [])
-    
+
+    //state of TotalProducts
+    const [totalProducts, setTotalProducts]= useState(0);
+    // getting cart products
+    useEffect(()=>{
+        auth.onAuthStateChanged(user=>{
+            if (user) {
+                fs.collection('Cart' + user.uid).onSnapshot(snapshot=>{
+                    const qty = snapshot.docs.length;
+                    setTotalProducts(qty);
+                })
+            }
+        })
+    },[])
+
     let Product;
     const addToCart = (product) => {
         if (uid!==null) {
@@ -80,7 +94,7 @@ export const Home=(props) => {
 
     return (
         <>
-            <Navbar user={user} />
+            <Navbar user={user} totalProducts={totalProducts}/>
             <br></br>
             {Products.length > 0 && (
                 <div className='container-fluid'>
