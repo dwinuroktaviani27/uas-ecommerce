@@ -1,9 +1,9 @@
 import React from "react";
-import { IndividualProduct } from "./IndividualProduct";
+import { IndividualCartProduct } from "./IndividualCartProduct";
 
 export const CartProducts = ({cartProducts}) =>{
     return cartProducts.map((cartProduct)=>(
-        <IndividualProduct key={cartProduct.ID} cartProduct={cartProduct}/>
+        <IndividualCartProduct key={cartProduct.ID} cartProduct={cartProduct}/>
     ))
         
     

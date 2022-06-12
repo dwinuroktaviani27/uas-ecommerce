@@ -3,7 +3,7 @@ import { Icon } from 'react-icons-kit'
 import { plus } from 'react-icons-kit/feather/plus'
 import { minus } from 'react-icons-kit/feather/minus'
 
-export const IndividualProduct = ({ cartProduct }) => {
+export const IndividualCartProduct = ({ cartProduct }) => {
     return (
         <div className='product'>
             <div className='product-img'>

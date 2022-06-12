@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react";
 import {Navbar} from './Navbar'
 import { auth, fs } from '../Config/Config'
-import { CartProducts } from "./CartProducts";
+import { CartProducts } from './CartProducts'
 
 export const Cart = () =>{
     // getting current user function
@@ -41,12 +41,12 @@ export const Cart = () =>{
                 })
             }
             else{
-                console.log('user is not signed in to retrieve cart')
+                console.log('user is not signed in to retrieve cart');
             }
         })
     },[])
 
-    // console.log(casrtProducts);
+    // console.log(cartProducts);
 
     return (
         <>
