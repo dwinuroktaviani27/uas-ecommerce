@@ -3,6 +3,13 @@ import StripeCheckout from 'react-stripe-checkout';
 import { Navbar } from './Navbar'
 import { auth, fs } from '../Config/Config'
 import { CartProducts } from './CartProducts'
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+// import { toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+
+// toast.configure();
 
 export const Cart = () => {
     // getting current user function
@@ -129,6 +136,33 @@ export const Cart = () => {
         })
     },[])
 
+    const history = useHistory();
+    const handleToken = async(token)=>{
+        // console.log(token);
+        const cart = {name: 'All Products', totalPrice}
+        const response = await axios.post('http://localhost:8080/checkout',{
+            token,
+            cart
+        })
+        console.log(response);
+        let {status}= response.data;
+        if(status==='success'){
+            history.push('/');
+            // toast.success('Your order has been placed successfully', {
+            //     position: 'top-right',
+            //     autoClose: 5000,
+            //     hideProgressBar: false,
+            //     closeOnClick: true,
+            //     pauseOnHover: false,
+            //     draggable: false,
+            //     progress: undefined,
+            // });
+        }
+        else{
+            alert('Something went wrong in checkout');
+        }
+    }
+
     return (
         <>
             <Navbar user={user} totalProducts={totalProducts}/>
@@ -151,7 +185,13 @@ export const Cart = () => {
                             Total Price to Pay: <span>{totalPrice}</span>
                         </div>
                         <br></br>
-                        <StripeCheckout>
+                        <StripeCheckout
+                        stripeKey="pk_test_51L9on3KZ3QDrGtIgztA2e1roXbCnEO8zFYnBk3jPxaKyEwQgjsQxbkEFVCmygrp8iFQex0Fv2h8JDaTZwkRslHY000hLLW71fi"
+                        token={handleToken}
+                        billingAddress
+                        shippingAddress
+                        name="All Products"
+                        amount={totalPrice * 100}>
                         </StripeCheckout>
                     </div>
 
